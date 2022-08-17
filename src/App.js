@@ -3,6 +3,7 @@ import './App.css';
 
 function App() {
   return (
+    // incício do projeto
     <span>Hello, App!</span>
   );
 }
