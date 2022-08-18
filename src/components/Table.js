@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import planetsAPI from '../services/planetsAPI';
 
 function Table() {
+  const [showAPI, setShowAPI] = useState([]);
+  const [nameFilter, setnameFilter] = useState('');
+
   const header = ['Name', 'Rotation Period', 'Orbital Period', 'Diameter', 'Climate',
     'Gravity', 'Terrain', 'Surface Water', 'Population', 'Films', 'Created', 'Edited',
     'URL'];
-
-  const [showAPI, setShowAPI] = useState([]);
 
   useEffect(() => {
     async function API() {
@@ -18,6 +19,13 @@ function Table() {
 
   return (
     <div>
+      <input
+        data-testid="name-filter"
+        type="text"
+        name="filterInput"
+        value={ nameFilter }
+        onChange={ ({ target }) => setnameFilter(target.value) }
+      />
       <table>
         <thead>
           <tr>
@@ -27,23 +35,25 @@ function Table() {
           </tr>
         </thead>
         <tbody>
-          {showAPI.map((item) => (
-            <tr key={ item.name }>
-              <td>{item.name}</td>
-              <td>{item.rotation_period}</td>
-              <td>{item.orbital_period}</td>
-              <td>{item.diameter}</td>
-              <td>{item.climate}</td>
-              <td>{item.gravity}</td>
-              <td>{item.terrain}</td>
-              <td>{item.surface_water}</td>
-              <td>{item.population}</td>
-              <td>{item.films}</td>
-              <td>{item.created}</td>
-              <td>{item.edited}</td>
-              <td>{item.url}</td>
-            </tr>
-          ))}
+          {
+            showAPI.filter((item) => item.name.includes(nameFilter)).map((item) => (
+              <tr key={ item.name }>
+                <td>{item.name}</td>
+                <td>{item.rotation_period}</td>
+                <td>{item.orbital_period}</td>
+                <td>{item.diameter}</td>
+                <td>{item.climate}</td>
+                <td>{item.gravity}</td>
+                <td>{item.terrain}</td>
+                <td>{item.surface_water}</td>
+                <td>{item.population}</td>
+                <td>{item.films}</td>
+                <td>{item.created}</td>
+                <td>{item.edited}</td>
+                <td>{item.url}</td>
+              </tr>
+            ))
+          }
         </tbody>
       </table>
     </div>
