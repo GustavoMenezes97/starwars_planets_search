@@ -1,31 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import planetsAPI from '../services/planetsAPI';
+import React, { useContext } from 'react';
+import AppContext from '../context/AppContext';
 
 function Table() {
-  const [showAPI, setShowAPI] = useState([]);
-  const [nameFilter, setnameFilter] = useState('');
+  const { showAPI, nameFilter } = useContext(AppContext);
 
   const header = ['Name', 'Rotation Period', 'Orbital Period', 'Diameter', 'Climate',
     'Gravity', 'Terrain', 'Surface Water', 'Population', 'Films', 'Created', 'Edited',
     'URL'];
 
-  useEffect(() => {
-    async function API() {
-      const data = await planetsAPI();
-      setShowAPI(data);
-    }
-    API();
-  }, []);
-
   return (
     <div>
-      <input
-        data-testid="name-filter"
-        type="text"
-        name="filterInput"
-        value={ nameFilter }
-        onChange={ ({ target }) => setnameFilter(target.value) }
-      />
       <table>
         <thead>
           <tr>
@@ -36,7 +20,9 @@ function Table() {
         </thead>
         <tbody>
           {
-            showAPI.filter((item) => item.name.includes(nameFilter)).map((item) => (
+            showAPI.filter((item) => (
+              item.name.toLowerCase().includes(nameFilter.toLowerCase())
+            )).map((item) => (
               <tr key={ item.name }>
                 <td>{item.name}</td>
                 <td>{item.rotation_period}</td>
