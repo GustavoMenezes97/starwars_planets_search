@@ -5,8 +5,27 @@ import planetsAPI from '../services/planetsAPI';
 
 function AppProvider({ children }) {
   const [showAPI, setShowAPI] = useState([]);
-  const [nameFilter, setNameFilter] = useState('');
-  const contextValue = { showAPI, nameFilter, setNameFilter };
+  const [filterByName, setFilterByName] = useState({ name: '' });
+  const [filterByNumericValues, setFilterByNumericValues] = useState(
+    [
+      {
+        column: '',
+        comparison: '',
+        value: '',
+      },
+    ],
+  );
+  const [selectedFilters, setSelectedFilters] = useState([]);
+
+  const contextValue = {
+    showAPI,
+    filterByName,
+    setFilterByName,
+    filterByNumericValues,
+    setFilterByNumericValues,
+    selectedFilters,
+    setSelectedFilters,
+  };
 
   useEffect(() => {
     async function API() {
@@ -14,6 +33,11 @@ function AppProvider({ children }) {
       setShowAPI(data);
     }
     API();
+    setFilterByNumericValues({
+      column: 'population',
+      comparison: 'maior que',
+      value: 0,
+    });
   }, []);
 
   return (
